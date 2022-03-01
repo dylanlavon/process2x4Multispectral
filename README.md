@@ -14,4 +14,5 @@ Using simple math, we can find the dimensions of each individual quadrant. By se
 we can easily use the viewslices() command, then successfully colormap the slices.
 
 #Output Image:
+
 ![Screenshot 2022-03-01 115212](https://user-images.githubusercontent.com/44561221/156222121-2ddaa874-7dd6-4eaa-8658-f0d4d7b08a40.png)
