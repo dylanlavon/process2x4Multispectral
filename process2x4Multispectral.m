@@ -3,16 +3,18 @@ clc;clear;
 %%%%%%%%%%%%%%%%%%%%%%%% Configuration Variables %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 baseImageDirectory = './baseImages/';
-processedImageDirectory = './processedImages/processed.';
-baseImgName = 'face8band'; % Ensure that this file path matches the file you want to process.
-                                                      % Do not add the file extension.
+processedImageDirectory = './processedImages/';
+
+% Ensure that this file path matches the file you want to process.
+% Do not add the file extension.
+baseImgName = '01_03_22_Multispectral_face_8Band'; 
 baseImgHeight = 512;           % In pixels, not including blank space
 baseImgWidth = 1024;           % In pixels, not including blank space
 numRows = 2;                   % Number of rows of quads in the base image
 numCols = 4;                   % Number of columns of quads in the base image
-addDesc = true;                % Displays Band # and frequency on each quadrant
+addDesc = false;                % Displays Band # and frequency on each quadrant
 descFontSize = 10;             % Description font size
-cMap = 'default';            % Define which colormap to use
+cMap = parula;            % Define which colormap to use
 
 % Band Frequencies, ignore if you aren't using the Description Text on
 % line 7.
@@ -21,6 +23,7 @@ bands = {'720nm' '760nm' '805nm' '830nm' '870nm' '905nm' '940nm' '980nm'};
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 tifExt = '.tif';
+
 numBands = numCols .* numRows;
 options.append = true;
 n=0; % Counter for numbering processedImage files
@@ -28,7 +31,9 @@ horSliceIncrement = baseImgWidth / numCols;
 vertSliceIncrement = baseImgHeight / numRows;
 quadCellArray = {};
 startVert = 1; endVert = vertSliceIncrement; startHor = 1; endHor = horSliceIncrement;
+
 baseImg = imread(append(baseImageDirectory, baseImgName, tifExt));
+
 descX = 11;
 descY = 11;
 bandCounter = 1;
@@ -88,7 +93,7 @@ finalName = append(processedImageDirectory, baseImgName, tifExt);
 % Allows for viewing in sliceViewer()
 
 for i = 1:numBands
-    saveastiff(cell2mat(quadCellArray(i)), finalName, options)
+    imwrite(cell2mat(quadCellArray(i)),cMap, finalName, 'WriteMode','append');
 end
 
 
@@ -97,5 +102,4 @@ end
 
 result = loadtiff(finalName);
 figure('Name',append('processed.',baseImgName, tifExt),'NumberTitle','off')
-sliceViewer(result);
-colormap(cMap)
+sliceViewer(result, "Colormap",cMap);
