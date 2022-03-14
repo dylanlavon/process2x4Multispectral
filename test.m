@@ -1,51 +1,47 @@
-% Variables %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-numRows = 2;
-numCols = 4;
-numBands = numRows * numCols;
-
-baseImgHeight = 512;           % In pixels, not including blank space
-baseImgWidth = 1024;           % In pixels, not including blank space
-
-horSliceIncrement = baseImgWidth / numCols;
-vertSliceIncrement = baseImgHeight / numRows;
-quadCellArray = {};
-startVert = 1; endVert = vertSliceIncrement; startHor = 1; endHor = horSliceIncrement;
-options.append = true;
+numOfBands = {'1' '2' '4' '6' '8'}'
+oneBand = {};
+twoBand = {};
+fourBand = {};
+sixBand = {};
+eightBand = {};
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+for bandFolder = 1:length(numOfBands)
+    currentBandFolder = char(numOfBands(bandFolder));
+    imagePath = append('./baseImages/', currentBandFolder, '/');
+    size = dir([imagePath '/*.tif']);
+    num = numel(size);
 
-% Take base b&w image and apply colormapping
-% Save colormapped image as jpg in mapped image directory
-
-baseImg = imread('./baseImages/face8band.tif');
-imwrite(baseImg,parula,'./mappedImages/mappedImage.jpg');
-mappedImg = imread('./mappedImages/mappedImage.jpg');
-
-
-
-% Capture each individual quad using their pixel coordinates, then add each
-% quad to the quadCellArray.
-
-for i = 1:numRows
-    for j = 1:numCols
-        quad = baseImg(startVert:endVert,startHor:endHor);
-        quadCellArray{end + 1} = quad;
-        startHor = startHor + horSliceIncrement;
-        endHor = endHor + horSliceIncrement;
+    if currentBandFolder == '1' && num >= 1
+        for x = 3:numel(dir(imagePath))
+            folder = dir(imagePath);
+            oneBand = [oneBand, append(folder(x).folder, '\', folder(x).name)]
+        end
     end
-    startVert = startVert + vertSliceIncrement;
-    endVert = endVert + vertSliceIncrement;
-    startHor = 1;
-    endHor = horSliceIncrement;
+    if currentBandFolder == '2' && num >= 1
+        for x = 3:numel(dir(imagePath))
+            folder = dir(imagePath);
+            twoBand = [twoBand, append(folder(x).folder, '\', folder(x).name)]
+        end
+    end
+    if currentBandFolder == '4' && num >= 1
+        for x = 3:numel(dir(imagePath))
+            folder = dir(imagePath);
+            fourBand = [fourBand, append(folder(x).folder, '\', folder(x).name)]
+        end
+    end
+    if currentBandFolder == '6' && num >= 1
+        for x = 3:numel(dir(imagePath))
+            folder = dir(imagePath);
+            sixBand = [sixBand, append(folder(x).folder, '\', folder(x).name)]
+        end
+    end
+    if currentBandFolder == '8' && num >= 1
+        for x = 3:numel(dir(imagePath))
+            folder = dir(imagePath);
+            eightBand = [eightBand, append(folder(x).folder, '\', folder(x).name)]
+        end
+    end
 end
 
-% Save the image as a multilayer .tif image
-for i = 1:numBands    
-    imwrite(cell2mat(quadCellArray(i)),parula,'finalImage.tif','WriteMode','append')
-end
-
-result = loadtiff('finalImage.tif')
-
-sliceViewer(result,"Colormap",parula)
+testImg = imread(char(eightBand(1)))
