@@ -12,35 +12,42 @@ The use of this script within MATLAB requires the following MATLAB Packages:
 
 [Computer Vision Toolbox](https://www.mathworks.com/products/computer-vision.html)
 
+For our case, our input images consist of a 2x4 grid of 256x256 pixel images. Together, the entire base image is 512x1024 pixels. This 512x1024 base image can have any number of 1, 2, 4, or 8 bands. 
 
-For our case, our input images consist of a 2x4 grid of 256x256 pixel images. Together, the entire base image is 512x1024 pixels. This 512x1024 base image can have any number of 2, 4, 6, or 8 bands. Users can specify the amount of bands using the configuration variables at the top of the script.
+This repo includes two scripts: processSingleImage.m and processAllDirectories.m
 
+## processSingleImage.m - For processing and viewing a single image stack.
+Users can specify the amount of bands using the configuration variables at the top of the script. It is important to correctly identify the source image. After running the script, the base image will be proccessed and saved, then subsequently displayed using MATLAB's sliceviewer.
 
-## Configuration Variables
-![variables](https://user-images.githubusercontent.com/44561221/157510434-70ff455c-17c5-48fe-bc11-e32c19eaca5e.png)
+## processAllDirectories.m - For processing all available source images in base directories.
+This script makes it easier to process large amounts of data at once. The script will pull all images from the 1, 2, 4, and 8 folders from the 'baseImages' directory, slice and map them, then save them to the 'processedImages' directory. 
 
-**baseImageDirectory** - Path to folder that holds the base images output from 2ndLook.
-
-**processedImageDirectory** - Path to folder that receives processed images.
-
-**baseImgName** - Must match the target base image's name. Do NOT include the file extension. File must be of type .tif. This can be selected during export from 2ndLook0.
-
-
-_Note that the following two variables must currently be manually adjusted when changing number of input bands._
-
-**baseImgHeight** - Base image height in pixels.
-
-**baseImgWidth** - Base image width in pixels.
+*Note: If a file already exists with the attempted name during the writing process, an integer will be appended and iterated to prevent overwriting. This applies to both scripts.*
 
 
-**addDesc** - Boolean value that determines whether or not description text will be added. Text is determined by descFontSize and the 'bands' array.
+## processSingleImage Configuration Variables
+![ProcessSingleImage config screenshot](https://user-images.githubusercontent.com/44561221/158435428-b5ed764b-9755-4b3b-b045-43bb95bce329.png)
 
-**descFontSize** - Font size for displayed description text.
+**baseImgName** - Must match the target base image's name. Do NOT include the file extension. File must be of type .tif. This can be selected during export from 2ndLook.
+Be sure to follow the naming convention of day_month_year_Project_Subject_numOfBands like so -> 01_03_22_Multispectral_face_8Band
 
 **cMap** - Color map to use. A list of all colormaps can be seen [here:](https://www.mathworks.com/help/matlab/ref/colormap.html#:~:text=the%20predefined%20colormaps.-,Colormap%20Name,-Color%20Scale)
 
-**bands** - Array that holds every possible band that can be output from the current camera.
+**addDesc** - Boolean value that determines whether or not description text will be added. Text is determined by descFontSize.
 
+**descFontSize** - Font size for displayed description text.
+
+## processSingleImage Configuration Variables
+![ProcessAllDirectories config screenshot](https://user-images.githubusercontent.com/44561221/158436230-3ce3be98-34a4-41af-8f79-98a9cbe96980.png)
+
+**cMap** - Color map to use. A list of all colormaps can be seen [here:](https://www.mathworks.com/help/matlab/ref/colormap.html#:~:text=the%20predefined%20colormaps.-,Colormap%20Name,-Color%20Scale)
+
+## Directory Setup
+As Github does not support empty directories and the image files are too large to upload, the empty directories are not included in the repo. Please ensure that your main project directory looks like the following.
+
+![directory](https://user-images.githubusercontent.com/44561221/158438789-b6ecb21e-06a2-4f9c-86ba-adb577165dbf.png)
+
+Be sure to put your images into their respective folders based on their amount of bands, as well as ensure the correct naming convention and file type for the scripts to operate properly.
 
 ## Example Input Images:
 
