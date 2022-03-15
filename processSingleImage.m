@@ -1,22 +1,22 @@
-  
 %%%%%%%%%%%%%%%%%%%%%%%% Configuration Variables %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-numBands = 4;
-baseImageDirectory = append('./baseImages/', int2str(numBands), '/');
-processedImageDirectory = './processedImages/';
-
 % Ensure that this file path matches the file you want to process.
-% Do not add the file extension.
-baseImgName = '01_03_22_Multispectral_hand_4Band'; 
+% Do not add the .tif file extension.
+% Be sure to follow the naming convention of
+% month_day_year_Project_subject_numOfBand.
+baseImgName = '15_03_22_Multispectral_can_1Band'; 
+ 
+% Define which colormap to use
+cMap = jet;             
 
-addDesc = false;                % Displays Band # and frequency on each quadrant
-descFontSize = 10;              % Description font size
-cMap = summer;                     % Define which colormap to use
+% Description variables
+addDesc = false;           % Displays Band # and frequency on each quadrant
+descFontSize = 10;         % Description font size
 
-% Description text band frequencies
-bands = {'720nm' '760nm' '805nm' '830nm' '870nm' '905nm' '940nm' '980nm'};
 
-%%%%%%%%%%%%%%%%%%%%%%%% CONSTNATS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% CONSTANTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+numBands = str2num(baseImgName(end-4:end-4));
 
 if numBands == 1
     numRows = 1;
@@ -30,15 +30,15 @@ if numBands == 4
     numRows = 1;
     numCols = 4;
 end
-if numBands == 6
-    numRows = 2;
-    numCols = 4;
-end
 if numBands == 8
     numRows = 2;
     numCols = 4;
 end
 
+baseImageDirectory = append('./baseImages/', int2str(numBands), '/');
+processedImageDirectory = './processedImages/';
+
+tifExt = '.tif';
 baseImgHeight = numRows * 256;           % In pixels, not including blank space
 baseImgWidth = numCols * 256;           % In pixels, not including blank space
 
@@ -50,8 +50,11 @@ bandCounter = 1;
 horSliceIncrement = baseImgWidth / numCols;
 vertSliceIncrement = baseImgHeight / numRows;
 
-tifExt = '.tif';
+
 options.append = true;
+
+% Description text band frequencies
+bands = {'720nm' '760nm' '805nm' '830nm' '870nm' '905nm' '940nm' '980nm'};
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -123,5 +126,12 @@ end
 % and subsequently view slices. Finally, apply selected colormap.
 
 result = loadtiff(finalName);
-figure('Name',append('processed.',baseImgName, tifExt),'NumberTitle','off')
-sliceViewer(result, "Colormap",cMap);
+figure('Name',append(baseImgName, tifExt),'NumberTitle','off')
+
+if numBands == 1
+    imshow(result, "Colormap", cMap)
+end
+
+if numBands ~= 1
+    sliceViewer(result, "Colormap",cMap);
+end

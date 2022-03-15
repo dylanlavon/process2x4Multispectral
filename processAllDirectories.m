@@ -1,18 +1,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%% Configuration Variables %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-processedImageDirectory = './processedImages/';
-cMap = summer;            % Define which colormap to use
+% Define which colormap to use
+cMap = jet;            
+
 
 %%%%%%%%%%%%%%%%%%%%%%%% CONSTNATS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-numOfBands = {'1' '2' '4' '6' '8'}';
+processedImageDirectory = './processedImages/';
+numOfBands = {'1' '2' '4' '8'}';
 oneBand = {};
 twoBand = {};
 fourBand = {};
-sixBand = {};
 eightBand = {};
-namesOfBands = {oneBand twoBand fourBand sixBand eightBand};
+namesOfBands = {oneBand twoBand fourBand eightBand};
 tifExt = '.tif';
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -47,14 +49,6 @@ for bandFolder = 1:length(numOfBands)
             stripped = folder(x).name;
             stripped = stripped(1:end-4);
             fourBand = [fourBand, stripped];
-        end
-    end
-    if currentBandFolder == '6' && num >= 1
-        for x = 3:numel(dir(imagePath))
-            folder = dir(imagePath);
-            stripped = folder(x).name;
-            stripped = stripped(1:end-4);
-            sixBand = [sixBand, stripped];
         end
     end
     if currentBandFolder == '8' && num >= 1
@@ -101,10 +95,6 @@ for folderIndex = 1:length(numOfBands)
         end
         if cell2mat(numOfBands(folderIndex)) == '4'
             numRows = 1;
-            numCols = 4;
-        end
-        if cell2mat(numOfBands(folderIndex)) == '6'
-            numRows = 2;
             numCols = 4;
         end
         if cell2mat(numOfBands(folderIndex)) == '8'
